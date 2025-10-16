@@ -1,10 +1,244 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
+  <meta charset="UTF-8">
   <title>学習ポータル</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #000;
+      text-align: center;
+      padding: 50px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    h1 {
+      font-size: 40px;
+      color: inherit;
+    }
+    .subject-button {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 25px;
+      font-size: 18px;
+      background-color: #0077cc;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+    #passwordSection {
+      display: none;
+      margin-top: 60px;
+    }
+    #passwordSection h2 {
+      margin-bottom: 10px;
+    }
+    input[type="password"],
+    #chatInput {
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      border: none;
+      background-color: #0077cc;
+      color: #fff;
+      cursor: pointer;
+    }
+    #gamePortal {
+      display: none;
+      margin-top: 50px;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      padding: 40px;
+      border-radius: 20px;
+    }
+    /* カスタマイズバー */
+    #customBar {
+      margin-bottom: 30px;
+      text-align: left;
+    }
+    #customBar label, #customBar select, #customBar button {
+      vertical-align: middle;
+      font-size: 16px;
+    }
+    /* ゲームリンク */
+    .game-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .game-link {
+      background-color: #111;
+      border: 2px solid #00f0ff;
+      border-radius: 15px;
+      margin: 10px;
+      padding: 15px;
+      width: 260px;
+      text-decoration: none;
+      color: #00f0ff;
+      font-size: 16px;
+      box-shadow: 0 0 10px #00f0ff;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .game-link:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00f0ff;
+    }
+    /* チャット */
+    #chatBox {
+      margin-top: 40px;
+    }
+    #messages {
+      height: 200px;
+      overflow-y: auto;
+      background: #222;
+      color: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #fff;
+      text-align: left;
+    }
+  </style>
 </head>
 <body>
-  <h1>ようこそ！</h1>
-  <p>ここは君の学習ポータルだよ！</p>
+  <h1>教科別学習リンク</h1>
+  <a class="subject-button" href="https://www.nhk.or.jp/kokokoza/" target="_blank">国語</a>
+  <a class="subject-button" href="https://www.khanacademy.org/math" target="_blank">数学</a>
+  <a class="subject-button" href="https://www.khanacademy.org/science" target="_blank">理科</a>
+  <a class="subject-button" href="https://www.khanacademy.org/humanities" target="_blank">社会</a>
+  <a class="subject-button" href="https://www.khanacademy.org/ela" target="_blank">英語</a>
+  <a class="subject-button" href="https://www.classicsforkids.com/" target="_blank">音楽</a>
+  <a class="subject-button" href="https://www.tate.org.uk/kids" target="_blank">美術</a>
+  <a class="subject-button" href="https://kidshealth.org/en/kids/" target="_blank">技術・家庭</a>
+  <a class="subject-button" href="https://www.youtube.com/user/PEUniverse" target="_blank">体育</a>
+
+  <div id="passwordSection">
+    <h2>🔐 教材ダウンロードにはパスワードが必要です</h2>
+    <input type="password" id="password" placeholder="パスワードを入力">
+    <button onclick="toggleGamePortal()">切り替え</button>
+  </div>
+
+  <div id="gamePortal">
+    <!-- カスタマイズ機能 -->
+    <div id="customBar">
+      <label for="languageSelect">🌐 言語:</label>
+      <select id="languageSelect" onchange="changeLanguage()">
+        <option value="ru">ロシア語</option>
+        <option value="zh">中国語</option>
+        <option value="ko">朝鮮語</option>
+      </select>
+      <label for="themeToggle" style="margin-left:20px;">🎨 テーマ:</label>
+      <button id="themeToggle" onclick="toggleTheme()">ダークモード</button>
+    </div>
+
+    <h2 id="portalTitle">🎮 ゲームポータル</h2>
+    <div class="game-container">
+      <a class="game-link" href="https://www.godfield.net/" target="_blank">ゴッドフィールド</a>
+      <a class="game-link" href="https://casual.hangame.co.jp/oekaki/" target="_blank">おえかきの森</a>
+      <a class="game-link" href="https://gapoli.dmm.com/" target="_blank">GAPOLI</a>
+      <a class="game-link" href="https://yandex.com/games/" target="_blank">Yandex Games</a>
+      <a class="game-link" href="https://www.armorgames.com/" target="_blank">Armor Games</a>
+      <a class="game-link" href="https://www.kongregate.com/" target="_blank">Kongregate</a>
+      <a class="game-link" href="https://www.miniclip.com/games/en/" target="_blank">Miniclip</a>
+      <a class="game-link" href="https://www.addictinggames.com/" target="_blank">Addicting Games</a>
+      <a class="game-link" href="https://fun.symbaloo.com/home/mix/13ePLYG69H" target="_blank">Symbaloo ゲームミックス</a>
+    </div>
+
+    <div id="chatBox">
+      <h3 id="chatTitle">💬 チャットルーム</h3>
+      <div id="messages"></div>
+      <input id="chatInput" type="text" placeholder="メッセージを入力">
+      <button id="sendBtn" onclick="sendMessage()">送信</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    // パスワード＆表示制御
+    let unlocked = false;
+    const portal = document.getElementById("gamePortal");
+    document.addEventListener("keydown", e => {
+      if (e.ctrlKey && e.key.toLowerCase() === "a") {
+        document.getElementById("passwordSection").style.display = "block";
+      }
+    });
+    function toggleGamePortal() {
+      const input = document.getElementById("password").value;
+      if (!unlocked && input === "810") {
+        portal.style.display = "block";
+        unlocked = true;
+      } else if (unlocked) {
+        portal.style.display = portal.style.display === "none" ? "block" : "none";
+      } else {
+        alert("パスワードが違います。");
+      }
+    }
+
+    // Socket.IO チャット
+    const socket = io();
+    function sendMessage() {
+      const msg = document.getElementById("chatInput").value.trim();
+      if (msg) {
+        socket.emit("chat message", msg);
+        document.getElementById("chatInput").value = "";
+      }
+    }
+    socket.on("chat message", msg => {
+      const m = document.createElement("div");
+      m.textContent = msg;
+      document.getElementById("messages").appendChild(m);
+      document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+    });
+
+    // 言語＆テーマ切り替え
+    const translations = {
+      ru: {
+        portalTitle: "🎮 Игровой портал",
+        chatTitle: "💬 Чат",
+        sendBtn: "Отправить",
+        passwordHeading: "🔐 Требуется пароль для доступа",
+        toggleBtn: "Переключить"
+      },
+      zh: {
+        portalTitle: "🎮 游戏门户",
+        chatTitle: "💬 聊天室",
+        sendBtn: "发送",
+        passwordHeading: "🔐 需要密码访问",
+        toggleBtn: "切换"
+      },
+      ko: {
+        portalTitle: "🎮 게임 포털",
+        chatTitle: "💬 채팅방",
+        sendBtn: "보내기",
+        passwordHeading: "🔐 비밀번호가 필요합니다",
+        toggleBtn: "전환"
+      }
+    };
+    function changeLanguage() {
+      const lang = document.getElementById("languageSelect").value;
+      const t = translations[lang];
+      document.getElementById("portalTitle").textContent = t.portalTitle;
+      document.getElementById("chatTitle").textContent = t.chatTitle;
+      document.getElementById("sendBtn").textContent = t.sendBtn;
+      document.querySelector("#passwordSection h2").textContent = t.passwordHeading;
+      document.querySelector("#passwordSection button").textContent = t.toggleBtn;
+    }
+
+    let darkMode = true;
+    function toggleTheme() {
+      darkMode = !darkMode;
+      document.body.style.backgroundColor = darkMode ? "#f4f4f4" : "#1a1a1a";
+      document.body.style.color = darkMode ? "#000" : "#fff";
+      document.getElementById("themeToggle").textContent = darkMode ? "ダークモード" : "ライトモード";
+    }
+  </script>
 </body>
 </html>
