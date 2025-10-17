@@ -49,6 +49,28 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // 🌟 アイコン選択機能
+  const iconList = document.getElementById("iconList");
+  const icons = ["icon1.png", "icon2.png", "icon3.png", "icon4.png"];
+
+  icons.forEach(src => {
+    const img = document.createElement("img");
+    img.src = `/images/${src}`;
+    img.style.width = "40px";
+    img.style.height = "40px";
+    img.style.borderRadius = "50%";
+    img.style.cursor = "pointer";
+    img.style.border = "2px solid transparent";
+    img.style.margin = "5px";
+    img.onclick = () => {
+      profileImageData = img.src;
+      localStorage.setItem("profileImage", profileImageData);
+      document.querySelectorAll("#iconList img").forEach(i => i.classList.remove("selected"));
+      img.classList.add("selected");
+    };
+    iconList.appendChild(img);
+  });
+
   // Socket.IO チャット
   const socket = io();
 
