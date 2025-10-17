@@ -35,7 +35,8 @@
       margin-bottom: 10px;
     }
     input[type="password"],
-    #chatInput {
+    #chatInput,
+    #usernameInput {
       padding: 10px;
       font-size: 18px;
       border-radius: 5px;
@@ -59,7 +60,6 @@
       padding: 40px;
       border-radius: 20px;
     }
-    /* カスタマイズバー */
     #customBar {
       margin-bottom: 30px;
       text-align: left;
@@ -68,7 +68,6 @@
       vertical-align: middle;
       font-size: 16px;
     }
-    /* ゲームリンク */
     .game-container {
       display: flex;
       flex-wrap: wrap;
@@ -91,12 +90,11 @@
       transform: scale(1.05);
       box-shadow: 0 0 20px #00f0ff;
     }
-    /* チャット */
     #chatBox {
       margin-top: 40px;
     }
     #messages {
-      height: 200px;
+      height: 250px;
       overflow-y: auto;
       background: #222;
       color: #fff;
@@ -105,6 +103,11 @@
       margin-bottom: 10px;
       border: 1px solid #fff;
       text-align: left;
+    }
+    #profileImageInput,
+    #imageInput {
+      margin-top: 10px;
+      margin-right: 10px;
     }
   </style>
 </head>
@@ -127,7 +130,6 @@
   </div>
 
   <div id="gamePortal">
-    <!-- カスタマイズ機能 -->
     <div id="customBar">
       <label for="languageSelect">🌐 言語:</label>
       <select id="languageSelect" onchange="changeLanguage()">
@@ -152,23 +154,28 @@
       <a class="game-link" href="https://fun.symbaloo.com/home/mix/13ePLYG69H" target="_blank">Symbaloo ゲームミックス</a>
     </div>
 
- <div id="chatBox">
-  <h3 id="chatTitle">💬 チャットルーム</h3>
-  <div id="messages"></div>
+    <div id="chatBox">
+      <h3 id="chatTitle">💬 チャットルーム</h3>
+      <div id="messages"></div>
 
-  <!-- 名前入力 -->
-  <input id="usernameInput" type="text" placeholder="名前を入力">
+      <!-- 名前入力 -->
+      <input id="usernameInput" type="text" placeholder="名前を入力">
 
-  <!-- メッセージ入力 -->
-  <input id="chatInput" type="text" placeholder="メッセージを入力">
-  <button id="sendBtn" onclick="sendMessage()">送信</button>
+      <!-- プロフィール画像選択 -->
+      <input type="file" id="profileImageInput" accept="image/*">
 
-  <!-- 🌟 画像送信機能 -->
-  <input type="file" id="imageInput" accept="image/*">
-  <button onclick="sendImage()">画像送信</button>
-</div>
-<!-- Socket.IOとJavaScriptの読み込み -->
-<script src="/socket.io/socket.io.js"></script>
-<script src="script.js"></script>
+      <!-- メッセージ入力 -->
+      <input id="chatInput" type="text" placeholder="メッセージを入力">
+      <button id="sendBtn" onclick="sendMessage()">送信</button>
+
+      <!-- 画像送信機能 -->
+      <input type="file" id="imageInput" accept="image/*">
+      <button onclick="sendImage()">画像送信</button>
+    </div>
+  </div>
+
+  <!-- Socket.IOとJavaScriptの読み込み -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
