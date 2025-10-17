@@ -33,6 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Socket.IO チャット
   const socket = io();
+
   window.sendMessage = function () {
     const msg = document.getElementById("chatInput").value.trim();
     const username = document.getElementById("usernameInput").value.trim() || "匿名";
@@ -41,9 +42,36 @@ window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("chatInput").value = "";
     }
   };
+
+  window.sendImage = function () {
+    const fileInput = document.getElementById("imageInput");
+    const file = fileInput.files[0];
+    const username = document.getElementById("usernameInput").value.trim() || "匿名";
+
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imageData = e.target.result;
+        socket.emit("chat image", {
+          user: username,
+          image: imageData
+        });
+      };
+      reader.readAsDataURL(file);
+      fileInput.value = "";
+    }
+  };
+
   socket.on("chat message", msg => {
     const m = document.createElement("div");
     m.textContent = msg;
+    document.getElementById("messages").appendChild(m);
+    document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+  });
+
+  socket.on("chat image", data => {
+    const m = document.createElement("div");
+    m.innerHTML = `<strong>${data.user}:</strong><br><img src="${data.image}" style="max-width:200px; border-radius:8px;">`;
     document.getElementById("messages").appendChild(m);
     document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
   });
