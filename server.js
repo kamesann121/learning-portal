@@ -1,20 +1,29 @@
-const express = require('express');
-const http = require('http');
-const socketIO = require('socket.io');
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = new Server(server);
 
-app.use(express.static(__dirname + '/public'));
+// publicフォルダを静的ファイルとして提供
+app.use(express.static("public"));
 
-io.on('connection', socket => {
-  socket.on('chat message', msg => {
-    io.emit('chat message', msg);
+io.on("connection", socket => {
+  console.log("ユーザーが接続しました");
+
+  // テキストメッセージ受信
+  socket.on("chat message", msg => {
+    io.emit("chat message", msg);
+  });
+
+  // 画像メッセージ受信
+  socket.on("chat image", data => {
+    io.emit("chat image", data);
   });
 });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`サーバーが起動しました！ポート: ${PORT}`);
 });
