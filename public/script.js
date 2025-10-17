@@ -31,6 +31,24 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // プロフィール画像保存＆復元
+  const profileInput = document.getElementById("profileImageInput");
+  let profileImageData = localStorage.getItem("profileImage");
+
+  if (profileInput) {
+    profileInput.addEventListener("change", () => {
+      const file = profileInput.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profileImageData = e.target.result;
+          localStorage.setItem("profileImage", profileImageData);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
   // Socket.IO チャット
   const socket = io();
 
@@ -38,7 +56,11 @@ window.addEventListener("DOMContentLoaded", () => {
     const msg = document.getElementById("chatInput").value.trim();
     const username = document.getElementById("usernameInput").value.trim() || "匿名";
     if (msg) {
-      socket.emit("chat message", `${username}: ${msg}`);
+      socket.emit("chat message", {
+        user: username,
+        text: msg,
+        icon: profileImageData || null
+      });
       document.getElementById("chatInput").value = "";
     }
   };
@@ -54,7 +76,8 @@ window.addEventListener("DOMContentLoaded", () => {
         const imageData = e.target.result;
         socket.emit("chat image", {
           user: username,
-          image: imageData
+          image: imageData,
+          icon: profileImageData || null
         });
       };
       reader.readAsDataURL(file);
@@ -62,16 +85,36 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  socket.on("chat message", msg => {
+  socket.on("chat message", data => {
     const m = document.createElement("div");
-    m.textContent = msg;
+    m.innerHTML = `
+      <div style="display:flex; align-items:flex-start; margin-bottom:15px;">
+        <div style="text-align:center; margin-right:10px;">
+          ${data.icon ? `<img src="${data.icon}" style="width:40px; height:40px; border-radius:50%; display:block;">` : ""}
+          <div style="font-size:12px; color:#ccc; margin-top:2px;">${data.user}</div>
+        </div>
+        <div style="background:#444; color:#fff; padding:10px 15px; border-radius:10px; max-width:70%;">
+          ${data.text}
+        </div>
+      </div>
+    `;
     document.getElementById("messages").appendChild(m);
     document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
   });
 
   socket.on("chat image", data => {
     const m = document.createElement("div");
-    m.innerHTML = `<strong>${data.user}:</strong><br><img src="${data.image}" style="max-width:200px; border-radius:8px;">`;
+    m.innerHTML = `
+      <div style="display:flex; align-items:flex-start; margin-bottom:15px;">
+        <div style="text-align:center; margin-right:10px;">
+          ${data.icon ? `<img src="${data.icon}" style="width:40px; height:40px; border-radius:50%; display:block;">` : ""}
+          <div style="font-size:12px; color:#ccc; margin-top:2px;">${data.user}</div>
+        </div>
+        <div style="background:#444; color:#fff; padding:10px 15px; border-radius:10px; max-width:70%;">
+          <img src="${data.image}" style="max-width:200px; border-radius:8px;">
+        </div>
+      </div>
+    `;
     document.getElementById("messages").appendChild(m);
     document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
   });
@@ -96,7 +139,7 @@ window.addEventListener("DOMContentLoaded", () => {
       portalTitle: "🎮 게임 포털",
       chatTitle: "💬 채팅방",
       sendBtn: "보내기",
-      passwordHeading: "🔐 비밀번호が 필요합니다",
+      passwordHeading: "🔐 비밀번호가 필요합니다",
       toggleBtn: "전환"
     }
   };
