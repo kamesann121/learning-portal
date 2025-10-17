@@ -104,7 +104,22 @@
       border: 1px solid #fff;
       text-align: left;
     }
-    #profileImageInput,
+    #profileSection {
+      margin-top: 40px;
+      text-align: left;
+    }
+    #iconList img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin: 5px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border 0.2s;
+    }
+    #iconList img.selected {
+      border: 2px solid #00f0ff;
+    }
     #imageInput {
       margin-top: 10px;
       margin-right: 10px;
@@ -154,27 +169,31 @@
       <a class="game-link" href="https://fun.symbaloo.com/home/mix/13ePLYG69H" target="_blank">Symbaloo ゲームミックス</a>
     </div>
 
+    <!-- プロフィール設定欄 -->
+    <div id="profileSection">
+      <h3>👤 プロフィール設定</h3>
+      <label for="usernameInput">名前：</label>
+      <input id="usernameInput" type="text" placeholder="名前を入力"><br><br>
+
+      <label>アイコンを選択：</label>
+      <div id="iconList" style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
+
+      <label style="display:block; margin-top:15px;">📸 スクショ画像をアップロード：</label>
+      <input type="file" id="profileImageInput" accept="image/*">
+    </div>
+
     <div id="chatBox">
       <h3 id="chatTitle">💬 チャットルーム</h3>
       <div id="messages"></div>
 
-      <!-- 名前入力 -->
-      <input id="usernameInput" type="text" placeholder="名前を入力">
-
-      <!-- プロフィール画像選択 -->
-      <input type="file" id="profileImageInput" accept="image/*">
-
-      <!-- メッセージ入力 -->
       <input id="chatInput" type="text" placeholder="メッセージを入力">
       <button id="sendBtn" onclick="sendMessage()">送信</button>
 
-      <!-- 画像送信機能 -->
       <input type="file" id="imageInput" accept="image/*">
       <button onclick="sendImage()">画像送信</button>
     </div>
   </div>
 
-  <!-- Socket.IOとJavaScriptの読み込み -->
   <script src="/socket.io/socket.io.js"></script>
   <script src="script.js"></script>
 </body>
