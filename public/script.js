@@ -96,7 +96,7 @@ window.addEventListener("DOMContentLoaded", () => {
       portalTitle: "🎮 게임 포털",
       chatTitle: "💬 채팅방",
       sendBtn: "보내기",
-      passwordHeading: "🔐 비밀번호가 필요합니다",
+      passwordHeading: "🔐 비밀번호が 필요합니다",
       toggleBtn: "전환"
     }
   };
