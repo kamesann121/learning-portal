@@ -42,7 +42,33 @@ app.post("/register", (req, res) => {
   res.json({ success: true });
 });
 
-// 💬 Socket.IO チャット処理
+// 🔑 ログインAPI（BAN＆登録チェック付き）
+app.post("/login", (req, res) => {
+  const { username } = req.body;
+  if (!username) return res.json({ success: false, reason: "名前が空です" });
+
+  let banned = [];
+  if (fs.existsSync(BANNED_FILE)) {
+    banned = JSON.parse(fs.readFileSync(BANNED_FILE));
+  }
+
+  if (banned.includes(username)) {
+    return res.json({ success: false, reason: "このユーザーはBANされています" });
+  }
+
+  let users = [];
+  if (fs.existsSync(USERS_FILE)) {
+    users = JSON.parse(fs.readFileSync(USERS_FILE));
+  }
+
+  if (!users.includes(username)) {
+    return res.json({ success: false, reason: "登録されていません" });
+  }
+
+  res.json({ success: true });
+});
+
+// 💬 Socket.IO チャット処理（BANユーザーは拒否）
 io.on("connection", socket => {
   console.log("ユーザーが接続しました");
 
