@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -17,7 +16,7 @@
       font-size: 40px;
       color: inherit;
     }
-    .subject-button {
+    .subject-button, button {
       display: inline-block;
       margin: 10px;
       padding: 15px 25px;
@@ -27,14 +26,9 @@
       border: none;
       border-radius: 10px;
       text-decoration: none;
+      cursor: pointer;
     }
-    #passwordSection {
-      display: none;
-      margin-top: 60px;
-    }
-    #passwordSection h2 {
-      margin-bottom: 10px;
-    }
+    input[type="text"],
     input[type="password"],
     #chatInput,
     #usernameInput {
@@ -42,16 +36,11 @@
       font-size: 18px;
       border-radius: 5px;
       border: 1px solid #ccc;
-      margin-right: 10px;
+      margin: 10px;
     }
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      border-radius: 5px;
-      border: none;
-      background-color: #0077cc;
-      color: #fff;
-      cursor: pointer;
+    #registerSection,
+    #passwordSection {
+      margin-top: 40px;
     }
     #gamePortal {
       display: none;
@@ -60,14 +49,6 @@
       color: #fff;
       padding: 40px;
       border-radius: 20px;
-    }
-    #customBar {
-      margin-bottom: 30px;
-      text-align: left;
-    }
-    #customBar label, #customBar select, #customBar button {
-      vertical-align: middle;
-      font-size: 16px;
     }
     .game-container {
       display: flex;
@@ -91,20 +72,6 @@
       transform: scale(1.05);
       box-shadow: 0 0 20px #00f0ff;
     }
-    #chatBox {
-      margin-top: 40px;
-    }
-    #messages {
-      height: 250px;
-      overflow-y: auto;
-      background: #222;
-      color: #fff;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #fff;
-      text-align: left;
-    }
     #profileSection {
       margin-top: 40px;
       text-align: left;
@@ -121,9 +88,19 @@
     #iconList img.selected {
       border: 2px solid #00f0ff;
     }
-    #imageInput {
-      margin-top: 10px;
-      margin-right: 10px;
+    #chatBox {
+      margin-top: 40px;
+    }
+    #messages {
+      height: 250px;
+      overflow-y: auto;
+      background: #222;
+      color: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #fff;
+      text-align: left;
     }
   </style>
 </head>
@@ -139,25 +116,20 @@
   <a class="subject-button" href="https://kidshealth.org/en/kids/" target="_blank">技術・家庭</a>
   <a class="subject-button" href="https://www.youtube.com/user/PEUniverse" target="_blank">体育</a>
 
+  <div id="registerSection">
+    <h2>📝 ユーザー登録</h2>
+    <input type="text" id="newUsername" placeholder="ユーザー名を入力">
+    <button onclick="registerUser()">登録</button>
+  </div>
+
   <div id="passwordSection">
-    <h2>🔐 教材ダウンロードにはパスワードが必要です</h2>
+    <h2>🔐 パスワード入力</h2>
     <input type="password" id="password" placeholder="パスワードを入力">
     <button onclick="toggleGamePortal()">切り替え</button>
   </div>
 
   <div id="gamePortal">
-    <div id="customBar">
-      <label for="languageSelect">🌐 言語:</label>
-      <select id="languageSelect" onchange="changeLanguage()">
-        <option value="ru">ロシア語</option>
-        <option value="zh">中国語</option>
-        <option value="ko">朝鮮語</option>
-      </select>
-      <label for="themeToggle" style="margin-left:20px;">🎨 テーマ:</label>
-      <button id="themeToggle" onclick="toggleTheme()">ダークモード</button>
-    </div>
-
-    <h2 id="portalTitle">🎮 ゲームポータル</h2>
+    <h2>🎮 ゲームポータル</h2>
     <div class="game-container">
       <a class="game-link" href="https://www.godfield.net/" target="_blank">ゴッドフィールド</a>
       <a class="game-link" href="https://casual.hangame.co.jp/oekaki/" target="_blank">おえかきの森</a>
@@ -167,10 +139,8 @@
       <a class="game-link" href="https://www.kongregate.com/" target="_blank">Kongregate</a>
       <a class="game-link" href="https://www.miniclip.com/games/en/" target="_blank">Miniclip</a>
       <a class="game-link" href="https://www.addictinggames.com/" target="_blank">Addicting Games</a>
-      <a class="game-link" href="https://fun.symbaloo.com/home/mix/13ePLYG69H" target="_blank">Symbaloo ゲームミックス</a>
     </div>
 
-    <!-- プロフィール設定欄 -->
     <div id="profileSection">
       <h3>👤 プロフィール設定</h3>
       <label for="usernameInput">名前：</label>
@@ -196,6 +166,6 @@
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
 </body>
 </html>
