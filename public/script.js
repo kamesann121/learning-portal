@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   window.toggleGamePortal = function () {
     const input = document.getElementById("password").value;
-    if (!unlocked && input === "810") {
+    if (!unlocked && input === "114514ジェラシー") {
       portal.style.display = "block";
       unlocked = true;
     } else if (unlocked) {
