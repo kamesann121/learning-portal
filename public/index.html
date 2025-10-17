@@ -183,14 +183,34 @@
     }
 
     // Socket.IO チャット
-    const socket = io();
-    function sendMessage() {
-      const msg = document.getElementById("chatInput").value.trim();
-      if (msg) {
-        socket.emit("chat message", msg);
-        document.getElementById("chatInput").value = "";
-      }
-    }
+// 名前保存＆復元
+window.addEventListener("load", () => {
+  const savedName = localStorage.getItem("username");
+  if (savedName) {
+    document.getElementById("usernameInput").value = savedName;
+  }
+});
+
+document.getElementById("usernameInput").addEventListener("input", e => {
+  localStorage.setItem("username", e.target.value);
+});
+// Socket.IO チャット
+const socket = io();
+function sendMessage() {
+  const msg = document.getElementById("chatInput").value.trim();
+  const username = document.getElementById("usernameInput").value.trim() || "匿名";
+  if (msg) {
+    socket.emit("chat message", `${username}: ${msg}`);
+    document.getElementById("chatInput").value = "";
+  }
+}
+socket.on("chat message", msg => {
+  const m = document.createElement("div");
+  m.textContent = msg;
+  document.getElementById("messages").appendChild(m);
+  document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+});
+
     socket.on("chat message", msg => {
       const m = document.createElement("div");
       m.textContent = msg;
