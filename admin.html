@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>管理者画面</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      padding: 50px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      margin: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #00aaff;
+      color: #fff;
+      cursor: pointer;
+      margin: 10px;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #0ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛡️ 管理者画面</h1>
+  <input type="text" id="username" placeholder="ユーザー名を入力">
+  <br>
+  <button onclick="banUser()">BANする</button>
+  <button onclick="unbanUser()">BAN解除</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function banUser() {
+      const name = document.getElementById("username").value.trim();
+      if (!name) return show("ユーザー名を入力してください");
+
+      const res = await fetch("/ban", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: name })
+      });
+      const data = await res.json();
+      show(data.success ? `${name} をBANしました` : `失敗: ${data.reason}`);
+    }
+
+    async function unbanUser() {
+      const name = document.getElementById("username").value.trim();
+      if (!name) return show("ユーザー名を入力してください");
+
+      const res = await fetch("/unban", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: name })
+      });
+      const data = await res.json();
+      show(data.success ? `${name} のBANを解除しました` : `失敗: ${data.reason}`);
+    }
+
+    function show(msg) {
+      document.getElementById("result").textContent = msg;
+    }
+  </script>
+</body>
+</html>
